@@ -1,6 +1,7 @@
 # myNN
 
 This is a simple example of Neural Networks and Deep Learning program in C++ using Visual Studio.
+
 The activation function is Logistic-Sigmoid function and the network uses Backpropagation.
 
 I used SpamAssasin Corpus as Training and Test data.

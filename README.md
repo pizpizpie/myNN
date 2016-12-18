@@ -1,6 +1,6 @@
 # myNN
 
-This is a simple example of Neural Networks and Deep Learning program in C++ using Visual Studio.
+This is a simple example of Neural Networks and Deep Learning program in C++ using Visual Studio; I recommend to use "Release Mode" and "MultiByte Character" as Character Sets.
 
 The activation function is Logistic-Sigmoid function and the network uses Backpropagation.
 

@@ -21,18 +21,20 @@ using namespace std;
 
 double Activation_Function(double u);
 
-// ‚±‚ÌƒvƒƒOƒ‰ƒ€‚Ì–{‘Ì
-// ŠwK‚¨‚æ‚ÑƒeƒXƒg‚ğs‚¤•”•ª
+// ã“ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®æœ¬ä½“
+// å­¦ç¿’ãŠã‚ˆã³ãƒ†ã‚¹ãƒˆã‚’è¡Œã†éƒ¨åˆ†
 class NeuralNetwork {
 
 private:
 
-	vector<Layer> input;			// “ü—Í‘wAvectorŒ^‚¾‚ªÀÛ‚Íˆê‘w‚Ì‚İ
-	vector<Layer> output;			// o—Í‘wAvectorŒ^‚¾‚ªÀÛ‚Íˆê‘w‚Ì‚İ
-	vector<Layer> hidden;			// ’†ŠÔ‘w
-	int number_of_hidden_layers;	// ’†ŠÔ‘w‚Ì‘w”
+	vector<Layer> input;			// å…¥åŠ›å±¤ã€vectorå‹ã ãŒå®Ÿéš›ã¯ä¸€å±¤ã®ã¿
+	vector<Layer> output;			// å‡ºåŠ›å±¤ã€vectorå‹ã ãŒå®Ÿéš›ã¯ä¸€å±¤ã®ã¿
+	vector<Layer> hidden;			// ä¸­é–“å±¤
+	int number_of_hidden_layers;	// ä¸­é–“å±¤ã®å±¤æ•°
 
-	vector<Layer> test_input;		// ƒeƒXƒgƒf[ƒ^
+	vector<Layer> test_input;		// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿
+
+	vector<int>	  t;				// çœŸå€¤
 
 public:
 
@@ -40,66 +42,64 @@ public:
 
 	void Initialize();
 
-	// ŠwK•”
+	// å­¦ç¿’éƒ¨
 	void Training(char training_data_path[]);
 
-	// ƒeƒXƒg•”
+	// ãƒ†ã‚¹ãƒˆéƒ¨
 	void Test(char test_data_path[]);
 
-	// ŠwK‚ÆƒeƒXƒg‚ÌÀs
+	// å­¦ç¿’ã¨ãƒ†ã‚¹ãƒˆã®å®Ÿè¡Œ
 	void Do();
 
-	// ’†ŠÔ‘w‚Ì‘w”‚ğİ’è
+	// ä¸­é–“å±¤ã®å±¤æ•°ã‚’è¨­å®š
 	void Create_Hidden_Layers(int _number_of_hidden_layers);
 
-	// ‰B‚ê‘w‚Éƒm[ƒh”‚ğİ’è‚·‚é
-	// (‚Ç‚Ì‰B‚ê‘w‚É, ‚¢‚­‚Â‚Ìƒm[ƒh‚ğİ’è‚·‚é‚©‚ğw’è)
+	// éš ã‚Œå±¤ã«ãƒãƒ¼ãƒ‰æ•°ã‚’è¨­å®šã™ã‚‹
+	// (ã©ã®éš ã‚Œå±¤ã«, ã„ãã¤ã®ãƒãƒ¼ãƒ‰ã‚’è¨­å®šã™ã‚‹ã‹ã‚’æŒ‡å®š)
 	void Setting_Hidden(int which, int number_of_nodes);
 
-	// ’†ŠÔ‘w“¯m‚ÌŒ‹‡‰×d‚Ìİ’è
-	// (‘ÎÛ‚Ì‘w‚Æ, ‚»‚ÌŸ‚Ì‘w‚Ìƒm[ƒh”)
-	void Generate_Weights_For_Hidden_Layer_Next(int which_layer,  int number_of_nodes_of_next_layer);
+	// ä¸­é–“å±¤åŒå£«ã®çµåˆè·é‡ã®è¨­å®š
+	// (å¯¾è±¡ã®å±¤ã¨, ãã®æ¬¡ã®å±¤ã®ãƒãƒ¼ãƒ‰æ•°)
+	void Generate_Weights_For_Hidden_Layer_Next(int which_layer, int number_of_nodes_of_next_layer);
 
-	// ‘S‚Ä‚Ì‰B‚ê‘w‚Ì‘Sƒm[ƒh‚ÌƒoƒCƒAƒX‚ğ‰Šú‰»
+	// å…¨ã¦ã®éš ã‚Œå±¤ã®å…¨ãƒãƒ¼ãƒ‰ã®ãƒã‚¤ã‚¢ã‚¹ã‚’åˆæœŸåŒ–
 	void Initialize_Biases_of_Hidden_Layers();
 
-	// ‘S‚Ä‚Ì‰B‚ê‘w‚Ì‘S‚Ä‚ÌŒ‹‡‰×d‚ğ‰Šú‰»
+	void Initialize_Biases_of_Output_Layers();
+
+	// å…¨ã¦ã®éš ã‚Œå±¤ã®å…¨ã¦ã®çµåˆè·é‡ã‚’åˆæœŸåŒ–
 	void Initialize_Weights_For_Hidden_Layer();
 
-	// ‹³tƒf[ƒ^‚É‚¨‚¯‚é“ü—Í‘w‚©‚çÅ‰‚Ì’†ŠÔ‘w‚ÌŠwK
+	// æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã«ãŠã‘ã‚‹å…¥åŠ›å±¤ã‹ã‚‰æœ€åˆã®ä¸­é–“å±¤ã®å­¦ç¿’
 	void Learn_Input_To_Hidden(vector<Layer> nnetinput);
 
-	// ‰B‚ê‘w“¯m‚ÌŠwK, ‰B‚ê‘w‚ª2‘wˆÈã‚Ì‚Æ‚«‚Ì‚İ
+	// éš ã‚Œå±¤åŒå£«ã®å­¦ç¿’, éš ã‚Œå±¤ãŒ2å±¤ä»¥ä¸Šã®ã¨ãã®ã¿
 	double Learn_Hidden_To_Hidden();
 
-	// 3‘wNNê—p
+	// 3å±¤NNå°‚ç”¨
 	double Learn_Hidden();
 
-	// o—Í‘w‚©‚çÅŒã‚Ì‰B‚ê‘w‚Ö‚ÌƒoƒbƒNƒvƒƒpƒQ[ƒVƒ‡ƒ“
-	void BackPropagation_Output_To_Hidden(double o);
+	// éš ã‚Œå±¤åŒå£«ã®ãƒãƒƒã‚¯ãƒ—ãƒ­ãƒ‘ã‚²ãƒ¼ã‚·ãƒ§ãƒ³
+	// æœ€å¾Œã®éš ã‚Œå±¤ã®1ã¤æ‰‹å‰ã‹ã‚‰ã€æœ€åˆã®éš ã‚Œå±¤ã¾ã§
+	void BackPropagation_Hidden_To_Hidden_5(double o, int idx);
 
-	// ‰B‚ê‘w“¯m‚ÌƒoƒbƒNƒvƒƒpƒQ[ƒVƒ‡ƒ“
-	// ÅŒã‚Ì‰B‚ê‘w‚Ì1‚Âè‘O‚©‚çAÅ‰‚Ì‰B‚ê‘w‚Ü‚Å
-	void BackPropagation_Hidden_To_Hidden(double o);
+	void BackPropagation_Hidden_To_Hidden_4(double o, int idx);
 
-	// Å‰‚Ì‰B‚ê‘w‚Æ“ü—Í‘w‚Ö‚ÌƒoƒbƒNƒvƒƒpƒQ[ƒVƒ‡ƒ“
-	void BackPropagation_Hidden_To_Input_For_Multiple_Layer(double o);
+	void BackPropagation_Hidden_for_3_layer_NN(double o, int idx);
 
-	void BackPropagation_Hidden_To_Input_For_3_Layer_NN(double o);
-
-	// ‹³tƒf[ƒ^‚Ì“ü—Í‘w‚Ìƒm[ƒh”‚ğİ’è‚·‚é
+	// æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã®å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¨­å®šã™ã‚‹
 	void Setting_Input(int number_of_nodes);
 
-	// ƒeƒXƒgƒf[ƒ^‚Ì“ü—Í‘w‚Ìƒm[ƒh”‚ğİ’è‚·‚é
+	// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã®å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¨­å®šã™ã‚‹
 	void Setting_Test_Input(int number_of_nodes);
 
-	// o—Í‘w‚Ìƒm[ƒh”‚ğİ’è‚·‚é
+	// å‡ºåŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¨­å®šã™ã‚‹
 	void Setting_Output(int number_of_nodes);
 
-	// ‹³tƒf[ƒ^‚Ì“ü—Í‘w‚Ìƒm[ƒh”‚ğ•Ô‚·
+	// æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã®å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¿”ã™
 	int Get_Number_Of_Nodes_In_Input_Layer();
 
-	// o—Í‘w‚Ìƒm[ƒh”‚ğ•Ô‚·
+	// å‡ºåŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¿”ã™
 	int Get_Number_Of_Nodes_In_Output_Layer();
 
 	double* Get_Cell_From_Input_p(int which_cell);
@@ -112,27 +112,27 @@ public:
 NeuralNetwork::NeuralNetwork () {
 
 #if	(USE_RANDOM_SEED == TRUE)
-	// —”‚ÌƒV[ƒh‚Ìİ’è
+	// ä¹±æ•°ã®ã‚·ãƒ¼ãƒ‰ã®è¨­å®š
 	srand((unsigned)time(NULL));
 #endif
 
-	// ‹³tƒf[ƒ^‚Ì“ü—Í‘w‚Æo—Í‘w‚Ì‘w”‚ğ‚»‚ê‚¼‚ê1‘w‚É
+	// æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã®å…¥åŠ›å±¤ã¨å‡ºåŠ›å±¤ã®å±¤æ•°ã‚’ãã‚Œãã‚Œ1å±¤ã«
 	input.resize(1);
 	output.resize(1);
 
-	// ƒeƒXƒgƒf[ƒ^‚Ì“ü—Í‘w‚à“¯—l
+	// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã®å…¥åŠ›å±¤ã‚‚åŒæ§˜
 	test_input.resize(1);
 
-	// ŠwK‚¨‚æ‚ÑƒeƒXƒg‚ÌÀs
+	// å­¦ç¿’ãŠã‚ˆã³ãƒ†ã‚¹ãƒˆã®å®Ÿè¡Œ
 	Do();
 }
 
 void NeuralNetwork::Initialize() {
 
-	// o—Í‘w‚Ìƒm[ƒh”‚ğİ’è
+	// å‡ºåŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¨­å®š
 	Setting_Output(NUMBER_OF_OUT_NODES);
 
-	// ’†ŠÔ‘w‚Ì”‚ğİ’è
+	// ä¸­é–“å±¤ã®æ•°ã‚’è¨­å®š
 	Create_Hidden_Layers(NUMBER_OF_HIDDEN_LAYERS);
 
 	vector<int> number_of_nodes_in_hidden_layers;
@@ -143,19 +143,19 @@ void NeuralNetwork::Initialize() {
 		number_of_nodes_in_hidden_layers[i] = NUMBER_OF_HIDDEN_NODES;
 	}
 
-	// ’†ŠÔ‘w‚Ìƒm[ƒh”‚Ìİ’è
+	// ä¸­é–“å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã®è¨­å®š
 	for(int i = 0; i < number_of_hidden_layers; i++) {
 
 		Setting_Hidden(i, number_of_nodes_in_hidden_layers[i]);
 	}
 
-	// ’†ŠÔ‘w‚ÌÅ‰‚Ì‘w‚ÆA“ü—Í‘w‚ÌŠÔ‚ÌŒ‹‡‰×d‚ğì‚é
+	// ä¸­é–“å±¤ã®æœ€åˆã®å±¤ã¨ã€å…¥åŠ›å±¤ã®é–“ã®çµåˆè·é‡ã‚’ä½œã‚‹
 	hidden[0].Generate_Weights_Of_Nodes_Previous(Get_Number_Of_Nodes_In_Input_Layer());
 
-	// ’†ŠÔ‘w‚ÌŒ‹‡‰×d
+	// ä¸­é–“å±¤ã®çµåˆè·é‡
 	for(int i = 0; i < number_of_hidden_layers; i++) {
 
-		// ÅŒã‚Ì’†ŠÔ‘w‚ÌAo—Í‘w‚Æ‚ÌŒ‹‡‰×d‚ğì‚é
+		// æœ€å¾Œã®ä¸­é–“å±¤ã®ã€å‡ºåŠ›å±¤ã¨ã®çµåˆè·é‡ã‚’ä½œã‚‹
 		if(i == number_of_hidden_layers - 1) {
 			Generate_Weights_For_Hidden_Layer_Next(i, Get_Number_Of_Nodes_In_Output_Layer());
 		}
@@ -165,20 +165,24 @@ void NeuralNetwork::Initialize() {
 		}
 	}
 
-	// ’†ŠÔ‘w‚ÌƒoƒCƒAƒX‚ğ‰Šú‰»
+	// ä¸­é–“å±¤ã®ãƒã‚¤ã‚¢ã‚¹ã‚’åˆæœŸåŒ–
 	Initialize_Biases_of_Hidden_Layers();
 
-	// “ü—Í‘w‚ÌŒ‹‡‰×d‚ğ—”‚Å‰Šú‰»‚·‚é
+	Initialize_Biases_of_Output_Layers();
+
+	// å…¥åŠ›å±¤ã®çµåˆè·é‡ã‚’ä¹±æ•°ã§åˆæœŸåŒ–ã™ã‚‹
 	hidden[0].Initialize_Weights_For_Previous_Layer();
 
-	// ’†ŠÔ‘w‚ÌŒ‹‡‰×d‚ğ—”‚Å‰Šú‰»‚·‚é
+	// ä¸­é–“å±¤ã®çµåˆè·é‡ã‚’ä¹±æ•°ã§åˆæœŸåŒ–ã™ã‚‹
 	Initialize_Weights_For_Hidden_Layer();
+
+	t.resize(NUMBER_OF_TRAINING_DATA);
 }
 
-// ŠwK•”
+// å­¦ç¿’éƒ¨
 void NeuralNetwork::Training(char training_data_path[]) {
 
-	// ‹³tƒf[ƒ^‚ÌƒŠƒXƒg‚ğæ“¾‚·‚é
+	// æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆã‚’å–å¾—ã™ã‚‹
 	File_Name_List training_file_list = File_Name_List(training_data_path);
 
 	FeatureVector training_fvec = FeatureVector(NUMBER_OF_TRAINING_DATA);
@@ -193,9 +197,13 @@ void NeuralNetwork::Training(char training_data_path[]) {
 	training_fvec.Show_Dimensionality();
 #endif
 
-	// “ü—Í‘w‚Ìƒm[ƒh”‚Ìİ’è(ƒNƒ‰ƒX‚Íœ‚­)
+	// å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã®è¨­å®š(ã‚¯ãƒ©ã‚¹ã¯é™¤ã)
 	Setting_Input(training_fvec.Get_Specified_Dimention(DIM_COL) - 1);
 	Initialize();
+
+	for(int i = 0; i < NUMBER_OF_TRAINING_DATA; i++) {
+		t[i] = training_fvec.Get_Specified_Feature(0, i, training_fvec.Get_Specified_Dimention(DIM_COL) - 1);
+	}
 
 	double err = INITIAL_ERR;
 
@@ -208,64 +216,76 @@ void NeuralNetwork::Training(char training_data_path[]) {
 
 		for(int i = 0; i < NUMBER_OF_TRAINING_DATA; i++) {
 
-			// “ü—Í‘w‚É“Á’¥ƒxƒNƒgƒ‹‚Ì’l‚ğ“ü‚ê‚é
+			// å…¥åŠ›å±¤ã«ç‰¹å¾´ãƒ™ã‚¯ãƒˆãƒ«ã®å€¤ã‚’å…¥ã‚Œã‚‹
 			for(int j = 0; j < input[0].Get_Number_Of_Nodes(); j++) {
 				double *p = Get_Cell_From_Input_p(j);
 				*p = training_fvec.Get_Specified_Feature(0, i, j);
 			}
 
-			// o—Í‘w‚ÉƒNƒ‰ƒX‚Ì’l‚ğ“ü‚ê‚é
+			// å‡ºåŠ›å±¤ã«ã‚¯ãƒ©ã‚¹ã®å€¤ã‚’å…¥ã‚Œã‚‹
 			for(int j = 0; j < output[0].Get_Number_Of_Nodes(); j++) {
 				double *p = Get_Cell_From_Output_p(j);
 				*p = training_fvec.Get_Specified_Feature(0, i, training_fvec.Get_Specified_Dimention(DIM_COL) - 1);
 			}
 
 			//////////////////////////
-			// ƒtƒHƒ[ƒhŠwK
+			// ãƒ•ã‚©ãƒ¯ãƒ¼ãƒ‰å­¦ç¿’
 			//////////////////////////
 
 			Learn_Input_To_Hidden(this->input);
 
-			// ‘½‘wNN‚Ìê‡
+			// å¤šå±¤NNã®å ´åˆ
 			if(number_of_hidden_layers > 1) {
 				o = Learn_Hidden_To_Hidden();
 			}
 
-			// 3‘wNN‚Ìê‡
+			// 3å±¤NNã®å ´åˆ
 			else {
 				o = Learn_Hidden();
 			}
 
 			//////////////////////////
-			// ƒoƒbƒNƒvƒƒpƒQ[ƒVƒ‡ƒ“
+			// ãƒãƒƒã‚¯ãƒ—ãƒ­ãƒ‘ã‚²ãƒ¼ã‚·ãƒ§ãƒ³
 			//////////////////////////
 
-			BackPropagation_Output_To_Hidden(o);
+			switch(number_of_hidden_layers) {
 
-			// ‘½‘wNN‚Ìê‡
-			if(number_of_hidden_layers > 1) {
-				BackPropagation_Hidden_To_Hidden(o);
-				BackPropagation_Hidden_To_Input_For_Multiple_Layer(o);
+			// å¤šå±¤NNã®å ´åˆ
+			case 3: 
+				BackPropagation_Hidden_To_Hidden_5(o, i);
+				break;
+
+			case 2:
+				BackPropagation_Hidden_To_Hidden_4(o, i);
+				break;
+
+			case 1:
+				BackPropagation_Hidden_for_3_layer_NN(o, i);
+				break;
+
+			default:
+				std::cout << "Number of Layers is incorrect" << std::endl;
+				exit(1);
+				break;
 			}
 
-			// 3‘wNN‚Ìê‡
-			else {
-				BackPropagation_Hidden_To_Input_For_3_Layer_NN(o);
-			}
-
-			// ƒGƒ‰[—¦‚ÌŒvZ
-			err += pow((o - (*output[0].Get_Specified_Cell_p(0))), 2.0);
+			// ã‚¨ãƒ©ãƒ¼ç‡ã®è¨ˆç®—
+			err += pow((t[i] - o), 2.0);
 		}
 
 		cnt++;
+
+#if	FSHOW_LOG == TRUE
 		std::cout << cnt << "\t" << err << std::endl;
+#endif
+
 	}
 }
 
-// ƒeƒXƒg•”
+// ãƒ†ã‚¹ãƒˆéƒ¨
 void NeuralNetwork::Test(char test_data_path[]) {
 
-	// ƒeƒXƒgƒf[ƒ^‚ÌƒŠƒXƒg‚ğæ“¾‚·‚é
+	// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆã‚’å–å¾—ã™ã‚‹
 	File_Name_List test_file_list = File_Name_List(test_data_path);
 
 	FeatureVector test_fvec = FeatureVector(NUMBER_OF_TEST_DATA);
@@ -276,20 +296,20 @@ void NeuralNetwork::Test(char test_data_path[]) {
 		exit(1);
 	}
 
-#ifdef	FSHOW_LOG
+#if	FSHOW_LOG == TRUE
 	test_file_list.Show();
 	test_fvec.Show_Dimensionality();
 #endif
 
-	// “ü—Í‘w‚Ìƒm[ƒh”‚Ìİ’è
+	// å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã®è¨­å®š
 	Setting_Test_Input(test_fvec.Get_Specified_Dimention(DIM_COL));
 
-	// ³‰ğ”
+	// æ­£è§£æ•°
 	unsigned int class1_correct = 0, class2_correct = 0;
 
 	for(int i = 0; i < NUMBER_OF_TEST_DATA; i++) {
 
-		// “ü—Í‘w‚É“Á’¥ƒxƒNƒgƒ‹‚Ì’l‚ğ“ü‚ê‚é
+		// å…¥åŠ›å±¤ã«ç‰¹å¾´ãƒ™ã‚¯ãƒˆãƒ«ã®å€¤ã‚’å…¥ã‚Œã‚‹
 		for(int j = 0; j < test_input[0].Get_Number_Of_Nodes(); j++) {
 
 			double *p = Get_Cell_From_Test_Input_p(j);
@@ -299,19 +319,21 @@ void NeuralNetwork::Test(char test_data_path[]) {
 		Learn_Input_To_Hidden(this->test_input);
 		double result = 0.0f;
 
-		// ƒlƒbƒgƒ[ƒN‚ª‘½‘w‚Ìê‡
+		// ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãŒå¤šå±¤ã®å ´åˆ
 		if(number_of_hidden_layers > 1) {
 
 			result = Learn_Hidden_To_Hidden();
 		}
 
-		// ƒlƒbƒgƒ[ƒN‚ª3‘w‚Ìê‡
+		// ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãŒ3å±¤ã®å ´åˆ
 		else {
 
 			result = Learn_Hidden();
 		}
 
+#if	FSHOW_LOG == TRUE
 		std::cout << result << " :\t" << ((result >= THRESHOLD) ? "1" : "0") << std::endl;
+#endif
 
 		if(i < LEN_CLASS1) {
 			if(result >= THRESHOLD) {
@@ -320,7 +342,7 @@ void NeuralNetwork::Test(char test_data_path[]) {
 		}
 
 		else {
-			if(result < THRESHOLD) {
+			if(result <= THRESHOLD) {
 				class2_correct++;
 			}
 		}
@@ -328,37 +350,38 @@ void NeuralNetwork::Test(char test_data_path[]) {
 
 	double class1_accuracy = ((double)class1_correct / LEN_CLASS1);
 	double class2_accuracy = ((double)class2_correct / LEN_CLASS2);
+	double mean_accuracy = ((class1_accuracy + class2_accuracy) / 2.0f);
 
-	std::cout << std::endl;
-	std::cout << "Class1 Accuracy = " << class1_accuracy << std::endl; 
-	std::cout << "Class2 Accuracy = " << class2_accuracy << std::endl;
-	std::cout << std::endl;
+	printf("%.3f %.3f \n", class1_accuracy, class2_accuracy);
 }
 
-// ŠwK‚¨‚æ‚ÑƒeƒXƒg‚ÌÀs
+// å­¦ç¿’ãŠã‚ˆã³ãƒ†ã‚¹ãƒˆã®å®Ÿè¡Œ
 void NeuralNetwork::Do() {
-
+	
 	Training(PATH_TRAINING_DATA);
 	Test(PATH_TEST_DATA);
+
+#if	(FSHOW_LOG == TRUE)
 	getch();
+#endif
 }
 
-// ’†ŠÔ‘w‚Ì‘w”‚ğİ’è
+// ä¸­é–“å±¤ã®å±¤æ•°ã‚’è¨­å®š
 void NeuralNetwork::Create_Hidden_Layers(int _number_of_hidden_layers) {
 
 	hidden.resize(_number_of_hidden_layers);
 	number_of_hidden_layers = _number_of_hidden_layers;
 }
 
-// ‰B‚ê‘w‚Éƒm[ƒh”‚ğİ’è‚·‚é
-// (‚Ç‚Ì‰B‚ê‘w‚É, ‚¢‚­‚Â‚Ìƒm[ƒh‚ğİ’è‚·‚é‚©‚ğw’è)
+// éš ã‚Œå±¤ã«ãƒãƒ¼ãƒ‰æ•°ã‚’è¨­å®šã™ã‚‹
+// (ã©ã®éš ã‚Œå±¤ã«, ã„ãã¤ã®ãƒãƒ¼ãƒ‰ã‚’è¨­å®šã™ã‚‹ã‹ã‚’æŒ‡å®š)
 void NeuralNetwork::Setting_Hidden(int which, int number_of_nodes) {
 
 	hidden[which].Setting(number_of_nodes);
 }
 
-// ’†ŠÔ‘w“¯m‚ÌŒ‹‡‰×d‚Ìİ’è
-// (‘ÎÛ‚Ì‘w‚Æ, ‚»‚ÌŸ‚Ì‘w‚Ìƒm[ƒh”)
+// ä¸­é–“å±¤åŒå£«ã®çµåˆè·é‡ã®è¨­å®š
+// (å¯¾è±¡ã®å±¤ã¨, ãã®æ¬¡ã®å±¤ã®ãƒãƒ¼ãƒ‰æ•°)
 void NeuralNetwork::Generate_Weights_For_Hidden_Layer_Next(
 	int which_layer,  
 	int number_of_nodes_of_next_layer) {
@@ -366,7 +389,7 @@ void NeuralNetwork::Generate_Weights_For_Hidden_Layer_Next(
 		hidden[which_layer].Generate_Weights_Of_Nodes_Next(number_of_nodes_of_next_layer);
 }
 
-// ‘S‚Ä‚Ì‰B‚ê‘w‚Ì‘Sƒm[ƒh‚ÌƒoƒCƒAƒX‚ğ‰Šú‰»
+// å…¨ã¦ã®éš ã‚Œå±¤ã®å…¨ãƒãƒ¼ãƒ‰ã®ãƒã‚¤ã‚¢ã‚¹ã‚’åˆæœŸåŒ–
 void NeuralNetwork::Initialize_Biases_of_Hidden_Layers() {
 
 	for(int i = 0; i < number_of_hidden_layers; i++) {
@@ -375,7 +398,12 @@ void NeuralNetwork::Initialize_Biases_of_Hidden_Layers() {
 	}
 }
 
-// ‘S‚Ä‚Ì‰B‚ê‘w‚Ì‘S‚Ä‚ÌŒ‹‡‰×d‚ğ‰Šú‰»
+void NeuralNetwork::Initialize_Biases_of_Output_Layers() {
+
+	output[0].Initialize_Bias_Of_Nodes();
+}
+
+// å…¨ã¦ã®éš ã‚Œå±¤ã®å…¨ã¦ã®çµåˆè·é‡ã‚’åˆæœŸåŒ–
 void NeuralNetwork::Initialize_Weights_For_Hidden_Layer() {
 
 	for(int i = 0; i < number_of_hidden_layers; i++) {
@@ -384,10 +412,10 @@ void NeuralNetwork::Initialize_Weights_For_Hidden_Layer() {
 	}
 }
 
-// ‹³tƒf[ƒ^‚É‚¨‚¯‚é“ü—Í‘w‚©‚çÅ‰‚Ì’†ŠÔ‘w‚ÌŠwK
+// æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã«ãŠã‘ã‚‹å…¥åŠ›å±¤ã‹ã‚‰æœ€åˆã®ä¸­é–“å±¤ã®å­¦ç¿’
 void NeuralNetwork::Learn_Input_To_Hidden(vector<Layer> nnetinput) {
 
-	// Å‰‚Ì‰B‚ê‘w‚Ìƒm[ƒh”‚ğæ“¾‚·‚é
+	// æœ€åˆã®éš ã‚Œå±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’å–å¾—ã™ã‚‹
 	int number_of_hidden_nodes = hidden[0].Get_Number_Of_Nodes();
 
 	for(int i = 0; i < number_of_hidden_nodes; i++) {
@@ -396,47 +424,50 @@ void NeuralNetwork::Learn_Input_To_Hidden(vector<Layer> nnetinput) {
 
 		int number_of_input_nodes = nnetinput[0].Get_Number_Of_Nodes();
 
-		// “ü—Í‘w‚Ìƒm[ƒh(j)‚Ì‚Â’l * Œ‹‡‰×d(‰B‚ê‘w‚Ìƒm[ƒhi‚Æ“ü—Í‘w‚Ìƒm[ƒhj) ‚Ì‘˜a‚ğæ‚é
+		// å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰(j)ã®æŒã¤å€¤ * çµåˆè·é‡(éš ã‚Œå±¤ã®ãƒãƒ¼ãƒ‰iã¨å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰j) ã®ç·å’Œã‚’å–ã‚‹
 		for(int j = 0; j < number_of_input_nodes; j++) {
 
 			value += (*nnetinput[0].Get_Specified_Cell_p(j)) 
 				* hidden[0].Get_Specified_Weight_Pre(i, j);
 		}
 
-		// ‰B‚ê‘w‚Ìƒm[ƒh(i)‚ÌƒoƒCƒAƒX‚ğˆø‚¢‚½’l‚ğŠˆ«‰»ŠÖ”‚É“ü‚êA‰B‚ê‘w‚Ìƒm[ƒh(i)‚Ì‚Â’l‚Æ‚·‚é
-		value -= (*hidden[0].Get_Specified_Bias_p(i));
+		// éš ã‚Œå±¤ã®ãƒãƒ¼ãƒ‰(i)ã®ãƒã‚¤ã‚¢ã‚¹ã‚’å¼•ã„ãŸå€¤ã‚’æ´»æ€§åŒ–é–¢æ•°ã«å…¥ã‚Œã€éš ã‚Œå±¤ã®ãƒãƒ¼ãƒ‰(i)ã®æŒã¤å€¤ã¨ã™ã‚‹
+		double tmp1 = *hidden[0].Get_Specified_Bias_p(i);
+		value += tmp1;
 		double *tmp = hidden[0].Get_Specified_Cell_p(i);
-		*tmp = Activation_Function(value);
+		value = Activation_Function(value);
+		*tmp = value;
 	}
 }
 
-// ‰B‚ê‘w“¯m‚ÌŠwK, ‰B‚ê‘w‚ª2‘wˆÈã‚Ì‚Æ‚«‚Ì‚İ
+// éš ã‚Œå±¤åŒå£«ã®å­¦ç¿’, éš ã‚Œå±¤ãŒ2å±¤ä»¥ä¸Šã®ã¨ãã®ã¿
 double NeuralNetwork::Learn_Hidden_To_Hidden() {
 
-	if(number_of_hidden_layers < 1) {
-		std::cout << "This network doesn't have more than 2 hidden layers." << std::endl;
+	if(number_of_hidden_layers < 2) {
+		std::cout << "This network doesn't have more than 1 hidden layers." << std::endl;
 		getch();
 		return 0.0f;
 	}
 
-	// ‰B‚ê‘w2‘w–Ú‚©‚çAÅŒã‚Ì‰B‚ê‘w‚Ü‚Å
+	// éš ã‚Œå±¤2å±¤ç›®ã‹ã‚‰ã€æœ€å¾Œã®éš ã‚Œå±¤ã¾ã§
 	for(int i = 1; i < number_of_hidden_layers; i++) {
 
-		// ˆ—‚ğ‚·‚é‰B‚ê‘w‚Ìƒm[ƒh”
+		// å‡¦ç†ã‚’ã™ã‚‹éš ã‚Œå±¤ã®ãƒãƒ¼ãƒ‰æ•°
 		for(int j = 0; j < hidden[i].Get_Number_Of_Nodes(); j++) {
 
 			double value = 0.0f;
 
-			// ˆ—‚ğ‚·‚é‰B‚ê‘w‚Ìˆê‘w‘O‚Ì‰B‚ê‘w‚Ìƒm[ƒh”
+			// å‡¦ç†ã‚’ã™ã‚‹éš ã‚Œå±¤ã®ä¸€å±¤å‰ã®éš ã‚Œå±¤ã®ãƒãƒ¼ãƒ‰æ•°
 			for(int k = 0; k < hidden[i-1].Get_Number_Of_Nodes(); k++) {
 
-				// ‰B‚ê‘w i-1 ‘w–Ú‚Ìƒm[ƒh(k) * Œ‹‡‰×d(‰B‚ê‘w i-1 ‚Ìƒm[ƒh k ‚Æ ‰B‚ê‘w i ‚Ìƒm[ƒh j) ‚Ì‘˜a‚ğæ‚é
+				// éš ã‚Œå±¤ i-1 å±¤ç›®ã®ãƒãƒ¼ãƒ‰(k) * çµåˆè·é‡(éš ã‚Œå±¤ i-1 ã®ãƒãƒ¼ãƒ‰ k ã¨ éš ã‚Œå±¤ i ã®ãƒãƒ¼ãƒ‰ j) ã®ç·å’Œã‚’å–ã‚‹
 				value += (*hidden[i-1].Get_Specified_Cell_p(k)) 
 					* hidden[i-1].Get_Specified_Weight(k, j);
 			}
 
-			// ‰B‚ê‘w i ‚Ìƒm[ƒh j ‚ÌƒoƒCƒAƒX‚ğˆø‚¢‚½’l‚ğŠˆ«‰»ŠÖ”‚É“ü‚êA‰B‚ê‘w i ‚Ìƒm[ƒh j ‚Ì‚Â’l‚Æ‚·‚é
-			value -= *(hidden[i].Get_Specified_Bias_p(j));
+			// éš ã‚Œå±¤ i ã®ãƒãƒ¼ãƒ‰ j ã®ãƒã‚¤ã‚¢ã‚¹ã‚’å¼•ã„ãŸå€¤ã‚’æ´»æ€§åŒ–é–¢æ•°ã«å…¥ã‚Œã€éš ã‚Œå±¤ i ã®ãƒãƒ¼ãƒ‰ j ã®æŒã¤å€¤ã¨ã™ã‚‹
+			double tmp1 = *(hidden[i].Get_Specified_Bias_p(j));
+			value += tmp1;
 			double *tmp = hidden[i].Get_Specified_Cell_p(j);
 			*tmp = Activation_Function(value);
 		}
@@ -444,22 +475,22 @@ double NeuralNetwork::Learn_Hidden_To_Hidden() {
 
 	double output_from_last_hidden_layer = 0.0f;
 
-	// ÅŒã‚Ì‰B‚ê‘w‚Ìo—Í’l
+	// æœ€å¾Œã®éš ã‚Œå±¤ã®å‡ºåŠ›å€¤
 	for(int i = 0; i < hidden[number_of_hidden_layers - 1].Get_Number_Of_Nodes(); i++) {
 
-		// ÅŒã‚Ì‰B‚ê‘w‚Ìƒm[ƒh i * Œ‹‡‰×d(ÅŒã‚Ì‰B‚ê‘w‚Ìƒm[ƒh i ‚Æ o—Í‘wƒm[ƒh (0)) ‚Ì‘˜a‚ğæ‚é
-		// o—Í‘w‚Ìƒm[ƒh‚ª•¡”‚Ìê‡‚àl—¶‚µ‚È‚­‚Ä‚Í‚¢‚¯‚È‚¢‚½‚ßAŒã’öC³‚·‚é‚±‚Æ
+		// æœ€å¾Œã®éš ã‚Œå±¤ã®ãƒãƒ¼ãƒ‰ i * çµåˆè·é‡(æœ€å¾Œã®éš ã‚Œå±¤ã®ãƒãƒ¼ãƒ‰ i ã¨ å‡ºåŠ›å±¤ãƒãƒ¼ãƒ‰ (0)) ã®ç·å’Œã‚’å–ã‚‹
+		// å‡ºåŠ›å±¤ã®ãƒãƒ¼ãƒ‰ãŒè¤‡æ•°ã®å ´åˆã‚‚è€ƒæ…®ã—ãªãã¦ã¯ã„ã‘ãªã„ãŸã‚ã€å¾Œç¨‹ä¿®æ­£ã™ã‚‹ã“ã¨
 		double *tmp = hidden[number_of_hidden_layers - 1].Get_Specified_Cell_p(i);
 		output_from_last_hidden_layer += ((*tmp) * hidden[number_of_hidden_layers - 1].Get_Specified_Weight(i, 0));
 	}
 
-	// o—Í‘w‚Ìƒm[ƒh‚ª•¡”‚Ìê‡‚àl—¶‚µ‚È‚­‚Ä‚Í‚¢‚¯‚È‚¢‚½‚ßAŒã’öC³‚·‚é‚±‚Æ
-	output_from_last_hidden_layer -= *(output[0].Get_Specified_Bias_p(0));
+	// å‡ºåŠ›å±¤ã®ãƒãƒ¼ãƒ‰ãŒè¤‡æ•°ã®å ´åˆã‚‚è€ƒæ…®ã—ãªãã¦ã¯ã„ã‘ãªã„ãŸã‚ã€å¾Œç¨‹ä¿®æ­£ã™ã‚‹ã“ã¨
+	output_from_last_hidden_layer += *(output[0].Get_Specified_Bias_p(0));
 
 	return Activation_Function(output_from_last_hidden_layer);
 }
 
-// 3‘wNNê—p
+// 3å±¤NNå°‚ç”¨
 double NeuralNetwork::Learn_Hidden() {
 
 	if(number_of_hidden_layers != 1)
@@ -467,170 +498,188 @@ double NeuralNetwork::Learn_Hidden() {
 
 	double value = 0.0f;
 
-	// o—Í‘w‚Ìƒm[ƒh‚ª•¡”‚Ìê‡‚àl—¶‚µ‚È‚­‚Ä‚Í‚¢‚¯‚È‚¢‚½‚ßAŒã’öC³‚·‚é‚±‚Æ
-	// o—Í‘w‚Ìƒm[ƒh”
+	// å‡ºåŠ›å±¤ã®ãƒãƒ¼ãƒ‰ãŒè¤‡æ•°ã®å ´åˆã‚‚è€ƒæ…®ã—ãªãã¦ã¯ã„ã‘ãªã„ãŸã‚ã€å¾Œç¨‹ä¿®æ­£ã™ã‚‹ã“ã¨
+	// å‡ºåŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°
 	for(int i = 0; i < output[0].Get_Number_Of_Nodes(); i++) {
 
-		// o—Í‘w‚Ì’¼‘O‚Ì‰B‚ê‘w‚Ìƒm[ƒh”
+		// å‡ºåŠ›å±¤ã®ç›´å‰ã®éš ã‚Œå±¤ã®ãƒãƒ¼ãƒ‰æ•°
 		for(int j = 0; j < hidden[0].Get_Number_Of_Nodes(); j++) {
 			value += (*hidden[0].Get_Specified_Cell_p(j)) 
 				* hidden[0].Get_Specified_Weight(j, i);
 		}
 
-		value -= *(output[0].Get_Specified_Bias_p(i));
+		double tmp = *(output[0].Get_Specified_Bias_p(i));
+		value += tmp;
 	}
 
 	return Activation_Function(value);
 }
 
-// o—Í‘w‚©‚çÅŒã‚Ì‰B‚ê‘w‚Ö‚ÌƒoƒbƒNƒvƒƒpƒQ[ƒVƒ‡ƒ“
-void NeuralNetwork::BackPropagation_Output_To_Hidden(double o) {
+// éš ã‚Œå±¤åŒå£«ã®ãƒãƒƒã‚¯ãƒ—ãƒ­ãƒ‘ã‚²ãƒ¼ã‚·ãƒ§ãƒ³
+// æœ€å¾Œã®éš ã‚Œå±¤ã®1ã¤æ‰‹å‰ã‹ã‚‰ã€æœ€åˆã®éš ã‚Œå±¤ã¾ã§
+void NeuralNetwork::BackPropagation_Hidden_To_Hidden_5(double o, int idx) {
 
-	double delta = *(output[0].Get_Specified_Cell_p(0)) - o;
-	double d = delta * o * (1.0f - o);
+	double delta = (t[idx] - o);
+	double d = delta * o * (1 - o);
 
-	for(int i = 0; i < hidden[number_of_hidden_layers - 1].Get_Number_Of_Nodes(); i++) {
-		double tmp = (*(hidden[number_of_hidden_layers - 1].Get_Specified_Cell_p(i)));
+	for(int i = 0; i < output[0].Get_Number_Of_Nodes(); i++) {
 
-		double dif_weight = ALPHA * d * tmp;
+		for(int j = 0; j < hidden[2].Get_Number_Of_Nodes(); ++j) {
 
-		hidden[number_of_hidden_layers - 1].Update_Specific_Weight(i, 0, dif_weight);
-	}
+			// çµåˆè·é‡ã®å¤‰åŒ–é‡
+			double dif_weight = ALPHA * d * *(hidden[2].Get_Specified_Cell_p(j));
+			hidden[2].Update_Specific_Weight(j, i, dif_weight);
 
-	// o—Í‘w‚ÌƒoƒCƒAƒX‚ÌC³
-	*(output[0].Get_Specified_Bias_p(0)) += ALPHA * (-1.0) * d;
-}
+			double dj = d
+				* hidden[2].Get_Specified_Weight(j, i) * (*hidden[2].Get_Specified_Cell_p(j)) * (1.0 - *hidden[2].Get_Specified_Cell_p(j));
 
-// ‰B‚ê‘w“¯m‚ÌƒoƒbƒNƒvƒƒpƒQ[ƒVƒ‡ƒ“
-// ÅŒã‚Ì‰B‚ê‘w‚Ì1‚Âè‘O‚©‚çAÅ‰‚Ì‰B‚ê‘w‚Ü‚Å
-void NeuralNetwork::BackPropagation_Hidden_To_Hidden(double o) {
+			double dif_weight2 = 0.0f;
 
-	double delta = *(output[0].Get_Specified_Cell_p(0)) - o;
-	double d = delta * o * (1.0f - o);
+			for(int k = 0; k < hidden[1].Get_Number_Of_Nodes(); k++) {
+				dif_weight2 = ALPHA * (*hidden[1].Get_Specified_Cell_p(k)) * dj;			//
+				hidden[1].Update_Specific_Weight(k, j, dif_weight2);						//
 
-	for(int i = (number_of_hidden_layers - 2); i > -1; i--) {
-		for(int j = 0; j < hidden[i].Get_Number_Of_Nodes(); j++) {
+				double dj2 = d
+				* hidden[2].Get_Specified_Weight(j, i) * (*hidden[2].Get_Specified_Cell_p(j)) * (1.0 - *hidden[2].Get_Specified_Cell_p(j))
+				* hidden[1].Get_Specified_Weight(k, j) * (*hidden[1].Get_Specified_Cell_p(k)) * (1.0 - *hidden[1].Get_Specified_Cell_p(k));
 
-			double dif_weight = 1e+0;
+				double dif_weight3 = 0.0f;
 
-			double tmp = (*(hidden[i].Get_Specified_Cell_p(j)));
+				for(int l = 0; l < hidden[0].Get_Number_Of_Nodes(); l++) {
+					dif_weight3 = ALPHA * (*hidden[0].Get_Specified_Cell_p(k)) * dj2;			//
+					hidden[0].Update_Specific_Weight(l, k, dif_weight3);						//
 
-			for(int k = i; k <= (number_of_hidden_layers - 2); k++) {
-				for(int l = 0; l < hidden[k].Get_Number_Of_Nodes(); l++) {
-					for(int m = 0; m < hidden[k + 1].Get_Number_Of_Nodes(); m++) {
-						// (1) ‚±‚±‚Ì dif_weight *= (d * ...) ‚©‚ç "d * "‚ğ”²‚¢‚½
-						dif_weight *= (d * (*hidden[k].Get_Specified_Cell_p(l)) 
-							* (1.0 - (*hidden[k].Get_Specified_Cell_p(l))) 
-							* hidden[k].Get_Specified_Weight(l, m));
+					double dj3 = d 
+						* hidden[2].Get_Specified_Weight(j, i) * (*hidden[2].Get_Specified_Cell_p(j)) * (1.0 - *hidden[2].Get_Specified_Cell_p(j))
+						* hidden[1].Get_Specified_Weight(k, j) * (*hidden[1].Get_Specified_Cell_p(k)) * (1.0 - *hidden[1].Get_Specified_Cell_p(k))
+						* hidden[0].Get_Specified_Weight(l, k) * (*hidden[0].Get_Specified_Cell_p(l)) * (1.0 - *hidden[0].Get_Specified_Cell_p(l));
+
+					double dif_weight4 = 0.0f;
+
+					for(int m = 0; m < input[0].Get_Number_Of_Nodes(); m++) {
+						dif_weight4 = ALPHA * (*input[0].Get_Specified_Cell_p(m)) * dj3;
+						hidden[0].Update_Specific_Weight_Pre(l, m, dif_weight4);
 					}
-				}
-			}
 
-			// Œ‹‡‰×d‚ÆƒoƒCƒAƒX‚ğXV‚·‚é
-			// Å‰‚Ì‰B‚ê‘w‚Å‚ÍÀs‚µ‚È‚¢
-			// “ü—Í‘w‚ÆÅ‰‚Ì‘w‚ÌŒ‹‡‰×d‚ÍBackPropagation_Hidden_To_Input()‚Åæ‚èˆµ‚¤
-			if(i > 0) {
-				double dif_weight_tmp = ALPHA * dif_weight * tmp;
-
-				for(int k = 0; k < hidden[i + 1].Get_Number_Of_Nodes(); k++) {
-					hidden[i].Update_Specific_Weight(j, k, dif_weight_tmp);
+					*(hidden[0].Get_Specified_Bias_p(l)) += ALPHA * (*(hidden[0].Get_Specified_Bias_p(l))) * dif_weight4;
 				}
 
-				*(hidden[i + 1].Get_Specified_Bias_p(j)) += ALPHA * (-1.0) * dif_weight_tmp;
+				*(hidden[1].Get_Specified_Bias_p(k)) += ALPHA * (*(hidden[1].Get_Specified_Bias_p(k))) * dif_weight3;
 			}
-		}
-	}
-}
 
-// Å‰‚Ì‰B‚ê‘w‚Æ“ü—Í‘w‚Ö‚ÌƒoƒbƒNƒvƒƒpƒQ[ƒVƒ‡ƒ“
-void NeuralNetwork::BackPropagation_Hidden_To_Input_For_Multiple_Layer(double o) {
-
-	double delta = *(output[0].Get_Specified_Cell_p(0)) - o;
-	double d = delta * o * (1.0f - o);
-	double tmp = 0.0;
-
-	double dif_weight;
-
-	for(int i = (number_of_hidden_layers - 2); i > -1; i--) {
-		for(int j = 0; j < hidden[i].Get_Number_Of_Nodes(); j++) {
-
-			dif_weight = 1e+0;
-
-			tmp = (*(hidden[i].Get_Specified_Cell_p(j)));
-
-			for(int k = i; k <= (number_of_hidden_layers - 2); k++) {
-				for(int l = 0; l < hidden[k].Get_Number_Of_Nodes(); l++) {
-					for(int m = 0; m < hidden[k + 1].Get_Number_Of_Nodes(); m++) {
-						// (1) ‚±‚±‚Ì dif_weight *= (d * ...) ‚©‚ç "d * "‚ğ”²‚¢‚½
-						dif_weight *= (d * (*hidden[k].Get_Specified_Cell_p(l)) 
-							* (1.0 - (*hidden[k].Get_Specified_Cell_p(l))) 
-							* hidden[k].Get_Specified_Weight(l, m));
-					}
-				}
-			}
+			*(hidden[0].Get_Specified_Bias_p(j)) += ALPHA * (*(hidden[0].Get_Specified_Bias_p(j))) * dif_weight2;
 		}
 
-		if(!i) {
+		*(output[0].Get_Specified_Bias_p(i)) += ALPHA * (*(output[0].Get_Specified_Bias_p(i))) * d;
+	}
+}
+
+// éš ã‚Œå±¤åŒå£«ã®ãƒãƒƒã‚¯ãƒ—ãƒ­ãƒ‘ã‚²ãƒ¼ã‚·ãƒ§ãƒ³
+// æœ€å¾Œã®éš ã‚Œå±¤ã®1ã¤æ‰‹å‰ã‹ã‚‰ã€æœ€åˆã®éš ã‚Œå±¤ã¾ã§
+void NeuralNetwork::BackPropagation_Hidden_To_Hidden_4(double o, int idx) {
+
+	double delta = (t[idx] - o);
+	double d = delta * o * (1 - o);
+
+	for(int j = 0; j < output[0].Get_Number_Of_Nodes(); j++) {
+		for(int i = 0; i < hidden[1].Get_Number_Of_Nodes(); ++i) {
+			// çµåˆè·é‡ã®å¤‰åŒ–é‡
+			double dif_weight = ALPHA * d * *(hidden[1].Get_Specified_Cell_p(i));
+			hidden[1].Update_Specific_Weight(i, j, dif_weight);
+
+			////////////////////////////////////////////////
+
+			double dj = (t[idx] - o) * o * (1.0 - o)
+				* hidden[1].Get_Specified_Weight(i, j) * (*hidden[1].Get_Specified_Cell_p(i)) * (1.0 - *hidden[1].Get_Specified_Cell_p(i));
+
+			double dif_weight2 = 0.0f;
+
 			for(int k = 0; k < hidden[0].Get_Number_Of_Nodes(); k++) {
-				tmp = (*(hidden[0].Get_Specified_Cell_p(k)));
-				double dif_weight_tmp = ALPHA * dif_weight * tmp;
+				dif_weight2 = ALPHA * (*hidden[0].Get_Specified_Cell_p(k)) * dj;
+				hidden[0].Update_Specific_Weight(k, i, dif_weight2);
+
+				double dj2 = (t[idx] - o) * o * (1.0 - o)
+				* hidden[1].Get_Specified_Weight(i, j) * (*hidden[1].Get_Specified_Cell_p(i)) * (1.0 - *hidden[1].Get_Specified_Cell_p(i))
+				* hidden[0].Get_Specified_Weight(k, i) * (*hidden[0].Get_Specified_Cell_p(k)) * (1.0 - *hidden[0].Get_Specified_Cell_p(k));
+
+				double dif_weight3 = 0.0f;
 
 				for(int l = 0; l < input[0].Get_Number_Of_Nodes(); l++) {
-					hidden[0].Update_Specific_Weight_Pre(k, l, dif_weight_tmp);
+					dif_weight3 = ALPHA * (*input[0].Get_Specified_Cell_p(l)) * dj2;
+					hidden[0].Update_Specific_Weight_Pre(k, l, dif_weight3);
 				}
 
-				*(hidden[0].Get_Specified_Bias_p(k)) += ALPHA * (-1.0) * dif_weight_tmp;
+				*(hidden[0].Get_Specified_Bias_p(k)) += ALPHA * (*(hidden[0].Get_Specified_Bias_p(k))) * dif_weight3;
 			}
+
+			*(hidden[1].Get_Specified_Bias_p(i)) += ALPHA * (*(hidden[1].Get_Specified_Bias_p(i))) * dif_weight2;
 		}
+
+		// ãƒã‚¤ã‚¢ã‚¹ã®ä¿®æ­£
+		*(output[0].Get_Specified_Bias_p(j)) += ALPHA * (*(output[0].Get_Specified_Bias_p(j))) * d;
+		// *(output[0].Get_Specified_Bias_p(j)) += ALPHA * (-1.0) * d;
 	}
 }
 
-void NeuralNetwork::BackPropagation_Hidden_To_Input_For_3_Layer_NN(double o) {
+// éš ã‚Œå±¤åŒå£«ã®ãƒãƒƒã‚¯ãƒ—ãƒ­ãƒ‘ã‚²ãƒ¼ã‚·ãƒ§ãƒ³
+// æœ€å¾Œã®éš ã‚Œå±¤ã®1ã¤æ‰‹å‰ã‹ã‚‰ã€æœ€åˆã®éš ã‚Œå±¤ã¾ã§
+void NeuralNetwork::BackPropagation_Hidden_for_3_layer_NN(double o, int idx) {
 
-	double delta = *(output[0].Get_Specified_Cell_p(0)) - o;
-	double d = delta * o * (1.0f - o);
+	double delta = (t[idx] - o);
+	double d = delta * o * (1 - o);
 
-	double dif_weight = 1e+0;
+	for(int j = 0; j < output[0].Get_Number_Of_Nodes(); j++) {
+		for(int i = 0; i < hidden[0].Get_Number_Of_Nodes(); ++i) {
+			// çµåˆè·é‡ã®å¤‰åŒ–é‡
+			double dif_weight = ALPHA * d * *(hidden[0].Get_Specified_Cell_p(i));
+			hidden[0].Update_Specific_Weight(i, j, dif_weight);
 
-	for(int i = 0; i < hidden[0].Get_Number_Of_Nodes(); i++) {
+			////////////////////////////////////////////////
 
-		dif_weight *= (d * (*hidden[0].Get_Specified_Cell_p(i)) 
-			* (1.0 - (*hidden[0].Get_Specified_Cell_p(i))) 
-			* hidden[0].Get_Specified_Weight(i, 0));
+			double dj = (t[idx] - o) * o * (1.0 - o)
+				* hidden[0].Get_Specified_Weight(i, j) * (*hidden[0].Get_Specified_Cell_p(i)) * (1.0 - *hidden[0].Get_Specified_Cell_p(i));
 
-		for(int j = 0; j < input[0].Get_Number_Of_Nodes(); j++) {
-			hidden[0].Update_Specific_Weight_Pre(i, j, dif_weight);
+			double dif_weight2 = 0.0f;
+
+			for(int k = 0; k < input[0].Get_Number_Of_Nodes(); k++) {
+				dif_weight2 = ALPHA * (*input[0].Get_Specified_Cell_p(k)) * dj;
+				hidden[0].Update_Specific_Weight_Pre(i, k, dif_weight2);
+			}
+
+			*(hidden[0].Get_Specified_Bias_p(i)) += ALPHA * (*(hidden[0].Get_Specified_Bias_p(i))) * dif_weight2;
 		}
 
-		*(hidden[0].Get_Specified_Bias_p(i)) += ALPHA * (-1.0) * dif_weight;
+		// ãƒã‚¤ã‚¢ã‚¹ã®ä¿®æ­£
+		// *(output[0].Get_Specified_Bias_p(j)) += ALPHA * (*(output[0].Get_Specified_Bias_p(j))) * d;
+		*(output[0].Get_Specified_Bias_p(j)) += ALPHA * (-1.0) * d;
 	}
 }
 
-// ‹³tƒf[ƒ^‚Ì“ü—Í‘w‚Ìƒm[ƒh”‚ğİ’è‚·‚é
+// æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã®å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¨­å®šã™ã‚‹
 void NeuralNetwork::Setting_Input(int number_of_nodes) {
 
 	input[0].Setting(number_of_nodes);
 }
 
-// ƒeƒXƒgƒf[ƒ^‚Ì“ü—Í‘w‚Ìƒm[ƒh”‚ğİ’è‚·‚é
+// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ã®å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¨­å®šã™ã‚‹
 void NeuralNetwork::Setting_Test_Input(int number_of_nodes) {
 
 	test_input[0].Setting(number_of_nodes);
 }
 
-// o—Í‘w‚Ìƒm[ƒh”‚ğİ’è‚·‚é
+// å‡ºåŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¨­å®šã™ã‚‹
 void NeuralNetwork::Setting_Output(int number_of_nodes) {
 
 	output[0].Setting(number_of_nodes);
 }
 
-// ‹³tƒf[ƒ^‚Ì“ü—Í‘w‚Ìƒm[ƒh”‚ğ•Ô‚·
+// æ•™å¸«ãƒ‡ãƒ¼ã‚¿ã®å…¥åŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¿”ã™
 int NeuralNetwork::Get_Number_Of_Nodes_In_Input_Layer() {
 
 	return input[0].Get_Number_Of_Nodes();
 }
 
-// o—Í‘w‚Ìƒm[ƒh”‚ğ•Ô‚·
+// å‡ºåŠ›å±¤ã®ãƒãƒ¼ãƒ‰æ•°ã‚’è¿”ã™
 int NeuralNetwork::Get_Number_Of_Nodes_In_Output_Layer() {
 
 	return output[0].Get_Number_Of_Nodes();
@@ -652,5 +701,5 @@ double* NeuralNetwork::Get_Cell_From_Output_p(int which_cell) {
 }
 
 double Activation_Function(double u) {
-	return 1.0 / (1.0 + exp(-u));
+	return (1.0 / (1.0 + exp(-(u))));
 }
